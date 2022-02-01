@@ -1,0 +1,33 @@
+server {
+  listen ${NGINX_PORT} default_server;
+  server_name ${NGINX_HOST};
+
+  client_max_body_size 50M;
+
+  error_log stderr;
+  access_log /dev/stdout;
+
+  root /var/www/html;
+  index index.php;
+
+  location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+  }
+
+  location ~ ^/.+\.php(/|$) {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+    if (!-f $document_root$fastcgi_script_name) {
+      return 404;
+    }
+
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO       $fastcgi_path_info;
+    fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+
+    fastcgi_pass ${FASTCGI_HOST}:${FASTCGI_PORT};
+    fastcgi_index index.php;
+    fastcgi_param HTTPS off;
+  }
+}
