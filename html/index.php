@@ -8,5 +8,8 @@
       <br />
       Hostname: <?php echo gethostname(); ?>
     </p>
+    <p>
+      URI: <?php echo $_SERVER['REQUEST_URI'] ?>
+    </p>
   </body>
 </html>

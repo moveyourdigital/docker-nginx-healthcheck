@@ -11,7 +11,7 @@ services:
       FASTCGI_HOST: fpm
       FASTCGI_PORT: 9000
     ports: 
-      - 8089:80
+      - 8080:80
     volumes:
       - ./html:/var/www/html
       - ./nginx/templates:/etc/nginx/templates
@@ -23,6 +23,6 @@ services:
     ]
 
   fpm:
-    image: php:8.0-fpm
+    image: php:8.1-fpm
     volumes:
       - ./html:/var/www/html
